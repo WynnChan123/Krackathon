@@ -175,7 +175,7 @@ export const uploadReceipt = async (file) => {
     const fileExt = file.name.split('.').pop();
     const fileName = `${user.id}/${Date.now()}.${fileExt}`;
 
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from('receipts')
       .upload(fileName, file, {
         cacheControl: '3600',

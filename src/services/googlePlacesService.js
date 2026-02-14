@@ -3,7 +3,7 @@
  * Fetches real supermarket locations across Malaysia
  */
 
-const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_PLACES_API_KEY;
+// const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_PLACES_API_KEY;
 
 /**
  * Predefined supermarket locations in major Malaysian cities

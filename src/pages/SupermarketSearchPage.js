@@ -8,12 +8,12 @@ import { fetchLocations, fetchCities, fetchItems, formatLocationType } from '../
 import { getMalaysianSupermarkets, convertGooglePlaceToLocation } from '../services/googlePlacesService';
 
 const SupermarketSearchPage = () => {
-  const { user, signOut } = useAuth();
+  const { signOut } = useAuth();
   const navigate = useNavigate();
   const [locations, setLocations] = useState([]);
   const [filteredLocations, setFilteredLocations] = useState([]);
   const [cities, setCities] = useState([]);
-  const [items, setItems] = useState([]);
+  // const [items, setItems] = useState([]); // Unused
   const [loading, setLoading] = useState(true);
   const [showPriceModal, setShowPriceModal] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -27,19 +27,39 @@ const SupermarketSearchPage = () => {
     items: [],
   });
 
+  // Define applyFilters before it is used in useEffect
+  const applyFilters = () => {
+    // Filter from the merged locations state instead of fetching from Supabase
+    let filtered = locations;
+
+    // Filter by location type
+    if (filters.locationType.length > 0) {
+      filtered = filtered.filter(loc => filters.locationType.includes(loc.type));
+    }
+
+    // Filter by city
+    if (filters.city) {
+      filtered = filtered.filter(loc => loc.city === filters.city);
+    }
+
+    setFilteredLocations(filtered);
+  };
+
   useEffect(() => {
     loadInitialData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     applyFilters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, locations]);
 
   const loadInitialData = async () => {
     setLoading(true);
     try {
       // Load both Supabase data and Malaysian supermarkets
-      const [locationsData, citiesData, itemsData, malaysianSupermarkets] = await Promise.all([
+      const [locationsData, , , malaysianSupermarkets] = await Promise.all([
         fetchLocations(),
         fetchCities(),
         fetchItems(),
