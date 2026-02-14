@@ -7,7 +7,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -96,6 +96,34 @@ const LoginPage = () => {
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
+
+          <div className="my-6 flex items-center">
+            <div className="flex-grow border-t border-gray-200"></div>
+            <span className="flex-shrink-0 mx-4 text-gray-500 text-sm">Or continue with</span>
+            <div className="flex-grow border-t border-gray-200"></div>
+          </div>
+
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                setLoading(true);
+                await signInWithGoogle();
+              } catch (err) {
+                setError(err.message || 'Failed to sign in with Google');
+                setLoading(false);
+              }
+            }}
+            disabled={loading}
+            className="w-full py-3 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 hover:shadow-md transition-all duration-200 flex items-center justify-center space-x-2"
+          >
+            <img 
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
+              alt="Google" 
+              className="w-5 h-5" 
+            />
+            <span>Sign in with Google</span>
+          </button>
 
           <div className="mt-6 text-center">
             <p className="text-gray-600">
