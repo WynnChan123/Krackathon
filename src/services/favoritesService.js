@@ -99,8 +99,6 @@ export const addFavorite = async (locationId, itemId, locationName, itemName) =>
       .single();
 
     if (error) throw error;
-
-    console.log('✅ Favorite added:', data);
     return data;
   } catch (error) {
     console.error('Error adding favorite:', error);
@@ -130,8 +128,6 @@ export const removeFavorite = async (locationId, itemId) => {
       .eq('item_id', itemId);
 
     if (error) throw error;
-
-    console.log('✅ Favorite removed');
     return true;
   } catch (error) {
     console.error('Error removing favorite:', error);
@@ -233,8 +229,6 @@ export const clearAllFavorites = async () => {
       .eq('user_id', user.id);
 
     if (error) throw error;
-
-    console.log('✅ All favorites cleared');
     return true;
   } catch (error) {
     console.error('Error clearing favorites:', error);

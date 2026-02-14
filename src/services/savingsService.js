@@ -47,14 +47,11 @@ export const getUserPurchases = async (userId = null) => {
   try {
     const { data: { user } } = await supabase.auth.getUser();
     
-    console.log('👤 Current user:', user);
-    
     if (!user) {
       throw new Error('User must be logged in');
     }
 
     const targetUserId = userId || user.id;
-    console.log('🎯 Target user ID:', targetUserId);
 
     const { data, error } = await supabase
       .from('user_purchases')
@@ -77,13 +74,11 @@ export const getUserPurchases = async (userId = null) => {
       .eq('user_id', targetUserId)
       .order('purchase_date', { ascending: false });
 
-    console.log('🔍 Supabase query result:', { data, error });
-
     if (error) throw error;
 
     return data || [];
   } catch (error) {
-    console.error('❌ Error fetching purchases:', error);
+    if (error) throw error;
     return [];
   }
 };

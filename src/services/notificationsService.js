@@ -81,7 +81,7 @@ export const createNotificationForUser = async (userId, data) => {
       is_read: false,
     };
 
-    console.log('📝 Attempting to create notification with data:', notificationData);
+
 
     const { data: notification, error } = await supabase
       .from('notifications')
@@ -90,7 +90,6 @@ export const createNotificationForUser = async (userId, data) => {
       .single();
 
     if (error) {
-      console.error('❌ Failed to create notification:', error);
       console.error('Error details:', {
         message: error.message,
         details: error.details,
@@ -100,10 +99,8 @@ export const createNotificationForUser = async (userId, data) => {
       throw error;
     }
 
-    console.log('✅ Notification created:', notification);
     return notification;
   } catch (error) {
-    console.error('❌ Error creating notification:', error);
     console.error('Full error object:', JSON.stringify(error, null, 2));
     return null;
   }
@@ -129,8 +126,6 @@ export const markAsRead = async (notificationId) => {
       .eq('user_id', user.id);
 
     if (error) throw error;
-
-    console.log('✅ Notification marked as read');
     return true;
   } catch (error) {
     console.error('Error marking notification as read:', error);
@@ -157,8 +152,6 @@ export const markAllAsRead = async () => {
       .eq('is_read', false);
 
     if (error) throw error;
-
-    console.log('✅ All notifications marked as read');
     return true;
   } catch (error) {
     console.error('Error marking all as read:', error);
@@ -186,8 +179,6 @@ export const deleteNotification = async (notificationId) => {
       .eq('user_id', user.id);
 
     if (error) throw error;
-
-    console.log('✅ Notification deleted');
     return true;
   } catch (error) {
     console.error('Error deleting notification:', error);
@@ -212,8 +203,6 @@ export const clearAllNotifications = async () => {
       .eq('user_id', user.id);
 
     if (error) throw error;
-
-    console.log('✅ All notifications cleared');
     return true;
   } catch (error) {
     console.error('Error clearing notifications:', error);

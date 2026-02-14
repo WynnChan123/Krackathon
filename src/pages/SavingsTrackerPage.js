@@ -17,16 +17,12 @@ const SavingsTrackerPage = () => {
   }, []);
 
   const loadPurchases = async () => {
-    console.log('🔍 Loading purchases...');
     setLoading(true);
     const data = await getUserPurchases();
-    console.log('📦 Purchases data:', data);
-    console.log('📊 Number of purchases:', data.length);
     setPurchases(data);
     
     // Calculate statistics
     const stats = await calculateSavings(data);
-    console.log('💰 Statistics:', stats);
     setStatistics(stats);
     
     setLoading(false);

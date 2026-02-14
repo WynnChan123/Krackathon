@@ -66,7 +66,7 @@ const SupermarketSearchPage = () => {
       setCities(allCities);
       setItems(itemsData);
       
-      console.log(`Loaded ${locationsData.length} locations from Supabase + ${newSupermarkets.length} Malaysian supermarkets`);
+
     } catch (error) {
       console.error('Error loading data:', error);
     } finally {
