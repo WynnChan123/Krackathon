@@ -1,70 +1,82 @@
-# Getting Started with Create React App
+# SaveSmart 🛍️💰
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**SaveSmart** is a crowdsourced supermarket price comparison web application built to help Malaysians find the best deals on groceries. By leveraging community-contributed pricing data and real-time location services, SaveSmart empowers users to make informed decisions about where to shop.
 
-## Available Scripts
+![SaveSmart Screenshot](public/logo512.png)
 
-In the project directory, you can run:
+## 🌟 Features
 
-### `npm start`
+*   **🛒 Interactive Map Search:** Visualize nearby supermarkets, pasar malams, grocery stores, and food banks on an interactive map (powered by Leaflet).
+*   **📍 Location-Based:** Automatically finds stores near you or lets you search by city.
+*   **💰 Crowdsourced Pricing:** Users can submit current prices for items at specific locations to help the community.
+*   **🧾 Receipt Verification:** Upload receipts as proof of purchase to validate submitted prices.
+*   **📉 Price Comparison:** Color-coded indicators (Green/Yellow/Red) instantly show if an item is cheap, moderate, or expensive compared to the market average.
+*   **🔐 Secure Authentication:** Sign up and log in using Email/Password or **Google Sign-In**.
+*   **📱 Responsive Design:** Fully optimized for desktops, tablets, and mobile phones.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🛠️ Tech Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+*   **Frontend:** [React.js](https://reactjs.org/)
+*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+*   **Backend / Database:** [Supabase](https://supabase.com/) (PostgreSQL, Auth, Storage)
+*   **Maps:** [Leaflet](https://leafletjs.com/) & [OpenStreetMap](https://www.openstreetmap.org/)
+*   **Icons:** [Lucide React](https://lucide.dev/)
 
-### `npm test`
+## 🚀 Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+*   Node.js (v14 or higher)
+*   npm or yarn
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/yourusername/savesmart.git
+    cd savesmart/frontend
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-### `npm run eject`
+3.  **Set up Environment Variables:**
+    Create a `.env` file in the `frontend` directory and add your keys:
+    ```env
+    REACT_APP_SUPABASE_URL=your_supabase_url
+    REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
+    REACT_APP_GOOGLE_PLACES_API_KEY=your_google_places_api_key (Optional)
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+4.  **Run the application:**
+    ```bash
+    npm start
+    ```
+    Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📦 Deployment to Vercel
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1.  Push your code to a GitHub repository.
+2.  Import the project into [Vercel](https://vercel.com/).
+3.  Add the environment variables (`REACT_APP_SUPABASE_URL`, etc.) in the Vercel dashboard.
+4.  Deploy!
+5.  **Important:** Add your Vercel deployment URL to the "Redirect URIs" in both **Supabase Auth Settings** and **Google Cloud Console** (for Google Sign-In to work).
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🤝 Contributing
 
-## Learn More
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1.  Fork the project
+2.  Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📄 License
 
-### Code Splitting
+This project is licensed under the MIT License.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+Built with ❤️ for the Krackathon.
