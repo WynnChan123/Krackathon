@@ -240,7 +240,7 @@ const SupermarketSearchPage = () => {
 
           {/* Map */}
           <div className="lg:col-span-3">
-            <div className="bg-white rounded-2xl shadow-lg p-4 h-[600px]">
+            <div className="bg-white rounded-2xl shadow-lg p-4 h-[400px] lg:h-[600px]">
               {loading ? (
                 <div className="h-full flex items-center justify-center">
                   <div className="text-center">

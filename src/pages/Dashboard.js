@@ -44,15 +44,15 @@ const Dashboard = () => {
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto">
           {/* Welcome Card */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome to SaveSmart!</h1>
+          <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-8">
+            <div className="flex flex-col md:flex-row items-center justify-between mb-6 text-center md:text-left">
+              <div className="mb-4 md:mb-0">
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Welcome to SaveSmart!</h1>
                 <p className="text-gray-600">
                   Logged in as: <span className="font-semibold text-indigo-600">{user?.email}</span>
                 </p>
               </div>
-              <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shrink-0">
                 <span className="text-3xl">✓</span>
               </div>
             </div>
@@ -136,9 +136,6 @@ const Dashboard = () => {
               <p className="text-gray-600 text-sm">
                 Get notified when prices drop at your favorite supermarkets.
               </p>
-              <span className="inline-block mt-3 text-xs font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
-                Coming Soon
-              </span>
             </div>
           </div>
         </div>

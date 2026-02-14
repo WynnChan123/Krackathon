@@ -31,7 +31,7 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <div className="container mx-auto px-6 py-20">
+      <div className="container mx-auto px-4 md:px-6 py-12 md:py-20">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-block mb-4 px-4 py-2 bg-indigo-100 rounded-full">
             <span className="text-indigo-700 font-semibold text-sm">
@@ -39,7 +39,7 @@ const LandingPage = () => {
             </span>
           </div>
           
-          <h1 className="text-6xl font-bold mb-6 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
             Find the{' '}
             <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
               Cheapest Supermarkets
@@ -48,16 +48,16 @@ const LandingPage = () => {
             Near You
           </h1>
           
-          <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
             Save money on groceries with our intelligent price comparison tool. 
             We help you discover the most affordable supermarkets in your area, 
             so you can stretch your budget further.
           </p>
 
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 sm:px-0">
             <Link
               to="/register"
-              className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-200"
+              className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-200 text-center"
             >
               Get Started Free
             </Link>
