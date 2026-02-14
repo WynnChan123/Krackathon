@@ -7,19 +7,19 @@ const PurchaseCard = ({ purchase, onDelete }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadSavings();
-  }, [loadSavings, purchase]);
+    const loadSavings = async () => {
+      setLoading(true);
+      const savingsData = await calculatePurchaseSavings(
+        purchase,
+        parseFloat(purchase.price_paid),
+        purchase.quantity
+      );
+      setSavings(savingsData);
+      setLoading(false);
+    };
 
-  const loadSavings = async () => {
-    setLoading(true);
-    const savingsData = await calculatePurchaseSavings(
-      purchase,
-      parseFloat(purchase.price_paid),
-      purchase.quantity
-    );
-    setSavings(savingsData);
-    setLoading(false);
-  };
+    loadSavings();
+  }, [purchase]);
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this purchase?')) {
