@@ -94,22 +94,7 @@ const SupermarketSearchPage = () => {
     }
   };
 
-  const applyFilters = () => {
-    // Filter from the merged locations state instead of fetching from Supabase
-    let filtered = locations;
 
-    // Filter by location type
-    if (filters.locationType.length > 0) {
-      filtered = filtered.filter(loc => filters.locationType.includes(loc.type));
-    }
-
-    // Filter by city
-    if (filters.city) {
-      filtered = filtered.filter(loc => loc.city === filters.city);
-    }
-
-    setFilteredLocations(filtered);
-  };
 
   const handleLocationTypeToggle = (type) => {
     setFilters(prev => ({
