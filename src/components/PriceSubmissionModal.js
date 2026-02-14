@@ -4,7 +4,6 @@ import { submitPrice, uploadReceipt } from '../services/priceService';
 import { fetchItems } from '../services/locationService';
 
 const PriceSubmissionModal = ({ location, onClose, onSuccess }) => {
-  const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
