@@ -84,7 +84,7 @@ const SupermarketSearchPage = () => {
       // Extract unique cities from all locations
       const allCities = [...new Set(allLocations.map(loc => loc.city).filter(Boolean))].sort();
       setCities(allCities);
-      setItems(itemsData);
+
       
 
     } catch (error) {
