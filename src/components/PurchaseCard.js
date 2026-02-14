@@ -8,7 +8,7 @@ const PurchaseCard = ({ purchase, onDelete }) => {
 
   useEffect(() => {
     loadSavings();
-  }, [purchase]);
+  }, [loadSavings, purchase]);
 
   const loadSavings = async () => {
     setLoading(true);
