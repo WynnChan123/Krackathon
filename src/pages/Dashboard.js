@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import NotificationDropdown from '../components/NotificationDropdown';
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -27,12 +28,15 @@ const Dashboard = () => {
               SaveSmart
             </span>
           </div>
-          <button
-            onClick={handleSignOut}
-            className="px-6 py-2 text-red-600 font-semibold hover:bg-red-50 rounded-lg transition-all duration-200"
-          >
-            Sign Out
-          </button>
+          <div className="flex items-center space-x-4">
+            <NotificationDropdown />
+            <button
+              onClick={handleSignOut}
+              className="px-6 py-2 text-red-600 font-semibold hover:bg-red-50 rounded-lg transition-all duration-200"
+            >
+              Sign Out
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -84,33 +88,47 @@ const Dashboard = () => {
               </button>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-dashed border-gray-200">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-2xl">📊</span>
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mb-4">
+                    <span className="text-2xl">📊</span>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-800 mb-2">Savings Tracker</h3>
+                  <p className="text-gray-600 text-sm mb-4">
+                    Track your purchases and see how much you've saved over time.
+                  </p>
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-800 mb-2">Savings Tracker</h3>
-              <p className="text-gray-600 text-sm">
-                Track how much you've saved over time by shopping at cheaper stores.
-              </p>
-              <span className="inline-block mt-3 text-xs font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
-                Coming Soon
-              </span>
+              <button
+                onClick={() => navigate('/savings-tracker')}
+                className="w-full py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold rounded-lg hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
+              >
+                Track Savings
+              </button>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-dashed border-gray-200">
-              <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-2xl">🛒</span>
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center mb-4">
+                    <span className="text-2xl">🛒</span>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-800 mb-2">Shopping Lists</h3>
+                  <p className="text-gray-600 text-sm mb-4">
+                    Create shopping lists and compare prices across supermarkets.
+                  </p>
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-800 mb-2">Shopping Lists</h3>
-              <p className="text-gray-600 text-sm">
-                Create shopping lists and see which store offers the best total price.
-              </p>
-              <span className="inline-block mt-3 text-xs font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
-                Coming Soon
-              </span>
+              <button
+                onClick={() => navigate('/shopping-list')}
+                className="w-full py-2 bg-gradient-to-r from-pink-500 to-pink-600 text-white font-semibold rounded-lg hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
+              >
+                My Shopping List
+              </button>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-dashed border-gray-200">
+            <div className="bg-white rounded-xl shadow-lg p-6">
               <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">🔔</span>
               </div>

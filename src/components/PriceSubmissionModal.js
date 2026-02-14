@@ -86,12 +86,15 @@ const PriceSubmissionModal = ({ location, onClose, onSuccess }) => {
       }
 
       // Submit price
+      const selectedItem = items.find(item => item.id === formData.item_id);
       const result = await submitPrice({
         item_id: formData.item_id,
         location_id: location.id,
         price: formData.price,
         date: formData.date,
         receipt_image_url: receiptUrl,
+        location_name: location.name,
+        item_name: selectedItem?.name || 'Unknown Item',
       });
 
       if (result.success) {

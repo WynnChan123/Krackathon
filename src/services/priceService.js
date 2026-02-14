@@ -1,4 +1,5 @@
 import { supabase } from './supabaseClient';
+import { createPriceUpdateNotification } from './notificationsService';
 
 /**
  * Submit a new price for an item at a location
@@ -32,6 +33,23 @@ export const submitPrice = async (priceData) => {
 
     if (error) throw error;
 
+    console.log('💰 Price submitted successfully:', data);
+    console.log('🔍 Checking for favorited items...', {
+      location_id: priceData.location_id,
+      item_id: priceData.item_id,
+      location_name: priceData.location_name,
+      item_name: priceData.item_name,
+    });
+
+    // Check if anyone has favorited this item at this location
+    await checkAndCreateNotifications(
+      priceData.location_id,
+      priceData.item_id,
+      parseFloat(priceData.price),
+      priceData.location_name,
+      priceData.item_name
+    );
+
     // Also log in user_submissions for record-keeping (optional)
     await supabase
       .from('user_submissions')
@@ -54,6 +72,91 @@ export const submitPrice = async (priceData) => {
     return { success: false, error: error.message };
   }
 };
+
+/**
+ * Check if item is favorited and create notifications
+ * @param {string} locationId - Location ID
+ * @param {string} itemId - Item ID
+ * @param {number} newPrice - New price
+ * @param {string} locationName - Location name
+ * @param {string} itemName - Item name
+ */
+const checkAndCreateNotifications = async (locationId, itemId, newPrice, locationName, itemName) => {
+  try {
+    // Get all users who favorited this item at this location
+    const { data: favorites, error: favError } = await supabase
+      .from('user_favorites')
+      .select('user_id, location_name, item_name')
+      .eq('location_id', locationId)
+      .eq('item_id', itemId);
+
+    console.log('🔍 Favorites query result:', { favorites, favError });
+    console.log('📊 Query parameters:', { locationId, itemId });
+
+    if (favError) {
+      console.error('❌ Error checking favorites:', favError);
+      return;
+    }
+
+    if (!favorites || favorites.length === 0) {
+      console.log('⚠️ No users have favorited this item');
+      console.log('💡 This could mean:');
+      console.log('   1. No one favorited this item');
+      console.log('   2. RLS policy is blocking the query');
+      console.log('   3. Location/Item IDs don\'t match');
+      return;
+    }
+
+    console.log(`📬 Found ${favorites.length} users who favorited this item`);
+
+    // Get the previous price for this item at this location
+    const { data: previousPrices, error: priceError } = await supabase
+      .from('prices')
+      .select('price')
+      .eq('location_id', locationId)
+      .eq('item_id', itemId)
+      .order('created_at', { ascending: false })
+      .limit(2); // Get last 2 prices (new one and previous one)
+
+    if (priceError) {
+      console.error('Error getting previous prices:', priceError);
+    }
+
+    // Determine old price (if exists)
+    const oldPrice = previousPrices && previousPrices.length > 1 
+      ? parseFloat(previousPrices[1].price) 
+      : newPrice; // If no previous price, use new price
+
+    // Create notifications for each user who favorited this item
+    for (const favorite of favorites) {
+      const notificationData = {
+        user_id: favorite.user_id,
+        location_id: locationId,
+        item_id: itemId,
+        location_name: locationName || favorite.location_name,
+        item_name: itemName || favorite.item_name,
+        old_price: oldPrice,
+        new_price: newPrice,
+      };
+
+      // Use the notification service to create notification
+      await createPriceUpdateNotification(
+        notificationData.user_id,
+        locationId,
+        itemId,
+        locationName || favorite.location_name,
+        itemName || favorite.item_name,
+        oldPrice,
+        newPrice
+      );
+    }
+
+    console.log(`✅ Created ${favorites.length} notifications`);
+  } catch (error) {
+    console.error('Error creating notifications:', error);
+  }
+};
+
 
 /**
  * Upload receipt image to Supabase Storage

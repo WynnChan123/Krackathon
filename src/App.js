@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import Dashboard from './pages/Dashboard';
 import SupermarketSearchPage from './pages/SupermarketSearchPage';
+import SavingsTrackerPage from './pages/SavingsTrackerPage';
+import ShoppingListPage from './pages/ShoppingListPage';
 import './App.css';
 
 function App() {
@@ -29,6 +31,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <SupermarketSearchPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/savings-tracker"
+            element={
+              <ProtectedRoute>
+                <SavingsTrackerPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/shopping-list"
+            element={
+              <ProtectedRoute>
+                <ShoppingListPage />
               </ProtectedRoute>
             }
           />

@@ -59,24 +59,67 @@ const MALAYSIAN_SUPERMARKET_LOCATIONS = [
 ];
 
 /**
- * Get predefined Malaysian supermarket locations
+ * Pasar Malam (Night Markets) locations
+ */
+const PASAR_MALAM_LOCATIONS = [
+  { name: 'Pasar Malam Taman Connaught', lat: 3.0833, lng: 101.7333, city: 'Kuala Lumpur', address: 'Taman Connaught, Cheras' },
+  { name: 'Pasar Malam SS2', lat: 3.1167, lng: 101.6167, city: 'Petaling Jaya', address: 'SS2, Petaling Jaya' },
+  { name: 'Pasar Malam Taman Megah', lat: 3.1333, lng: 101.6167, city: 'Petaling Jaya', address: 'Taman Megah, Petaling Jaya' },
+  { name: 'Pasar Malam Bangsar', lat: 3.1278, lng: 101.6686, city: 'Kuala Lumpur', address: 'Bangsar, Kuala Lumpur' },
+  { name: 'Pasar Malam Taman Tun Dr Ismail', lat: 3.1333, lng: 101.6333, city: 'Kuala Lumpur', address: 'TTDI, Kuala Lumpur' },
+];
+
+/**
+ * Grocery Stores locations
+ */
+const GROCERY_STORE_LOCATIONS = [
+  { name: '99 Speedmart Ampang', lat: 3.1569, lng: 101.7622, city: 'Kuala Lumpur', address: 'Ampang, Kuala Lumpur' },
+  { name: 'KK Mart Subang Jaya', lat: 3.0458, lng: 101.5810, city: 'Subang Jaya', address: 'Subang Jaya, Selangor' },
+  { name: 'Family Mart Bangsar', lat: 3.1278, lng: 101.6686, city: 'Kuala Lumpur', address: 'Bangsar, Kuala Lumpur' },
+  { name: '7-Eleven KLCC', lat: 3.1569, lng: 101.7122, city: 'Kuala Lumpur', address: 'KLCC, Kuala Lumpur' },
+  { name: 'Village Grocer Mont Kiara', lat: 3.1667, lng: 101.6500, city: 'Kuala Lumpur', address: 'Mont Kiara, Kuala Lumpur' },
+];
+
+/**
+ * Food Banks locations
+ */
+const FOOD_BANK_LOCATIONS = [
+  { name: 'Kechara Soup Kitchen', lat: 3.1569, lng: 101.7122, city: 'Kuala Lumpur', address: 'Jalan Maharajalela, Kuala Lumpur' },
+  { name: 'The Lost Food Project', lat: 3.1333, lng: 101.6833, city: 'Kuala Lumpur', address: 'Petaling Jaya, Selangor' },
+  { name: 'Pit Stop Community Cafe', lat: 3.1167, lng: 101.6500, city: 'Kuala Lumpur', address: 'Bangsar, Kuala Lumpur' },
+];
+
+/**
+ * Get all Malaysian locations (supermarkets, pasar malam, grocery stores, food banks)
+ * @param {Array<string>} types - Optional array of types to filter
  * @returns {Promise<Array>} Array of location objects
  */
-export const getMalaysianSupermarkets = async () => {
+export const getMalaysianSupermarkets = async (types = null) => {
   try {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    return MALAYSIAN_SUPERMARKET_LOCATIONS.map(loc => ({
+    const allLocations = [
+      ...MALAYSIAN_SUPERMARKET_LOCATIONS.map(loc => ({ ...loc, type: 'supermarket' })),
+      ...PASAR_MALAM_LOCATIONS.map(loc => ({ ...loc, type: 'pasar_malam' })),
+      ...GROCERY_STORE_LOCATIONS.map(loc => ({ ...loc, type: 'grocery_store' })),
+      ...FOOD_BANK_LOCATIONS.map(loc => ({ ...loc, type: 'food_bank' })),
+    ];
+    
+    // Filter by types if specified
+    const filteredLocations = types && types.length > 0
+      ? allLocations.filter(loc => types.includes(loc.type))
+      : allLocations;
+    
+    return filteredLocations.map(loc => ({
       ...loc,
-      type: 'supermarket',
       state: getStateFromCity(loc.city),
       chain: extractChainName(loc.name),
       google_place_id: `generated_${loc.name.toLowerCase().replace(/\s/g, '_')}`,
       prices: [], // Will be populated from Supabase
     }));
   } catch (error) {
-    console.error('Error loading Malaysian supermarkets:', error);
+    console.error('Error loading Malaysian locations:', error);
     return [];
   }
 };
@@ -109,7 +152,7 @@ export const searchNearbyPlaces = async (lat, lng, radius = 5000) => {
 export const convertGooglePlaceToLocation = (location) => {
   return {
     name: location.name,
-    type: 'supermarket',
+    type: location.type,
     address: location.address || location.vicinity || '',
     lat: location.lat,
     lng: location.lng,
@@ -117,7 +160,6 @@ export const convertGooglePlaceToLocation = (location) => {
     state: location.state || getStateFromCity(location.city),
     phone: location.phone || null,
     chain: extractChainName(location.name),
-    google_place_id: location.google_place_id || location.place_id || `generated_${Date.now()}`,
     operating_hours: location.operating_hours || null,
     prices: location.prices || [],
   };

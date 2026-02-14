@@ -1,8 +1,11 @@
 import 'leaflet/dist/leaflet.css';
+import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+import { Star } from 'lucide-react';
 import { getMarkerColor, getLocationIcon, formatLocationType, getAveragePrice, getPriceCategory } from '../services/locationService';
 import { getPriceFreshness, getFreshnessColor, formatDaysAgo } from '../services/priceService';
+import { getUserFavorites, toggleFavorite } from '../services/favoritesService';
 
 // Fix for default marker icon issue in React-Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -13,6 +16,26 @@ L.Icon.Default.mergeOptions({
 });
 
 const SupermarketMap = ({ locations, center = [3.139, 101.687], zoom = 12, onAddPrice, onViewReceipt }) => {
+  const [favoritesVersion, setFavoritesVersion] = useState(0);
+  const [userFavorites, setUserFavorites] = useState([]);
+  
+  // Load user favorites on mount
+  useEffect(() => {
+    loadFavorites();
+  }, [favoritesVersion]);
+  
+  const loadFavorites = async () => {
+    const favorites = await getUserFavorites();
+    setUserFavorites(favorites);
+  };
+  
+  // Check if item is favorited (synchronous check against loaded favorites)
+  const checkIsFavorite = (locationId, itemId) => {
+    return userFavorites.some(
+      fav => fav.location_id === locationId && fav.item_id === itemId
+    );
+  };
+
   // Calculate price range for color coding
   const allPrices = locations.flatMap(loc => 
     (loc.prices || []).map(p => parseFloat(p.price))
@@ -111,27 +134,55 @@ const SupermarketMap = ({ locations, center = [3.139, 101.687], zoom = 12, onAdd
                       </p>
                     </div>
                     <div className="space-y-2 max-h-32 overflow-y-auto">
-                      {location.prices.slice(0, 5).map((price) => (
-                        <div key={price.id} className="space-y-1">
-                          <div className="flex justify-between text-sm items-center">
-                            <span className="text-gray-700 flex-1">
-                              {price.items?.name || 'Unknown Item'}
-                              {price.items?.brand && ` (${price.items.brand})`}
-                            </span>
-                            <span className="font-semibold text-indigo-600 ml-2">
-                              RM {parseFloat(price.price).toFixed(2)}
-                            </span>
+                        {location.prices.slice(0, 5).map((price) => {
+                          const isItemFavorited = checkIsFavorite(location.id, price.item_id);
+                          
+                          const handleToggleFavorite = async (e) => {
+                            e.stopPropagation();
+                            await toggleFavorite(
+                              location.id,
+                              price.item_id,
+                              location.name,
+                              price.items?.name || 'Unknown Item'
+                            );
+                            // Force component to re-render
+                            setFavoritesVersion(v => v + 1);
+                          };
+                          
+                          return (
+                          <div key={price.id} className="space-y-1">
+                            <div className="flex justify-between text-sm items-center">
+                              <span className="text-gray-700 flex-1">
+                                {price.items?.name || 'Unknown Item'}
+                                {price.items?.brand && ` (${price.items.brand})`}
+                              </span>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={handleToggleFavorite}
+                                  className="p-1 hover:bg-gray-100 rounded transition-all"
+                                  title={isItemFavorited ? 'Remove from favorites' : 'Add to favorites'}
+                                >
+                                  <Star
+                                    className="w-4 h-4"
+                                    fill={isItemFavorited ? '#fbbf24' : 'none'}
+                                    stroke={isItemFavorited ? '#fbbf24' : '#6b7280'}
+                                  />
+                                </button>
+                                <span className="font-semibold text-indigo-600">
+                                  RM {parseFloat(price.price).toFixed(2)}
+                                </span>
+                              </div>
+                            </div>
+                            {price.receipt_url && onViewReceipt && (
+                              <button
+                                onClick={() => onViewReceipt(price.receipt_url, price.items?.name)}
+                                className="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1"
+                              >
+                                📷 View Receipt
+                              </button>
+                            )}
                           </div>
-                          {price.receipt_url && onViewReceipt && (
-                            <button
-                              onClick={() => onViewReceipt(price.receipt_url, price.items?.name)}
-                              className="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1"
-                            >
-                              📷 View Receipt
-                            </button>
-                          )}
-                        </div>
-                      ))}
+                        );})}
                     </div>
                     {location.prices.length > 5 && (
                       <p className="text-xs text-gray-500 mt-1">
